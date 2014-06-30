@@ -50,11 +50,11 @@ hinted_handoff_enabled: <%= cassandra_bool_config(node[:cassandra][:hinted_hando
 # created until it has been seen alive and gone down again.
 max_hint_window_in_ms: <%= node[:cassandra][:max_hint_window_in_ms] %>
 # throttle in KB's per second, per delivery thread
-hinted_handoff_throttle_in_kb: <%= node[:cassandra][:hinted_handoff_throttle_in_kb] %>
+## hinted_handoff_throttle_in_kb: <%= node[:cassandra][:hinted_handoff_throttle_in_kb] %>
 # Number of threads with which to deliver hints;
 # Consider increasing this number when you have multi-dc deployments, since
 # cross-dc handoff tends to be slower
-max_hints_delivery_threads: <%= node[:cassandra][:max_hints_delivery_threads] %>
+## max_hints_delivery_threads: <%= node[:cassandra][:max_hints_delivery_threads] %>
 
 # The following setting populates the page cache on memtable flush and compaction
 # WARNING: Enable this setting only when the whole node's data fits in memory.
@@ -78,13 +78,13 @@ authenticator: <%= node[:cassandra][:authenticator] %>
 # - AllowAllAuthorizer allows any action to any user - set it to disable authorization.
 # - CassandraAuthorizer stores permissions in system_auth.permissions table. Please
 #   increase system_auth keyspace replication factor if you use this authorizer.
-authorizer: <%= node[:cassandra][:authorizer] %>
+authority: <%= node[:cassandra][:authorizer] %>
 
 # Validity period for permissions cache (fetching permissions can be an
 # expensive operation depending on the authorizer, CassandraAuthorizer is
 # one example). Defaults to 2000, set to 0 to disable.
 # Will be disabled automatically for AllowAllAuthorizer.
-permissions_validity_in_ms: <%= node[:cassandra][:permissions_validity_in_ms] %>
+## permissions_validity_in_ms: <%= node[:cassandra][:permissions_validity_in_ms] %>
 
 # The partitioner is responsible for distributing rows (by key) across
 # nodes in the cluster.  Any IPartitioner may be used, including your
@@ -123,7 +123,7 @@ commitlog_directory: <%= File.join(node.cassandra.commitlog_dir, 'commitlog') %>
 #              remaining available sstables.  This means you WILL see obsolete
 #              data at CL.ONE!
 # ignore: ignore fatal errors and let requests fail, as in pre-1.2 Cassandra
-disk_failure_policy: <%= node[:cassandra][:disk_failure_policy] %>
+## disk_failure_policy: <%= node[:cassandra][:disk_failure_policy] %>
 
 # Maximum size of the key cache in memory.
 #
@@ -338,9 +338,9 @@ broadcast_address: <%= node[:cassandra][:broadcast_address] %>
 # transport is considered beta.
 # Please note that the address on which the native transport is bound is the
 # same as the rpc_address. The port however is different and specified below.
-start_native_transport: <%= cassandra_bool_config(node[:cassandra][:start_native_transport]) %>
+## start_native_transport: <%= cassandra_bool_config(node[:cassandra][:start_native_transport]) %>
 # port for the CQL native transport to listen for clients on
-native_transport_port: <%= node[:cassandra][:native_transport_port] %>
+## native_transport_port: <%= node[:cassandra][:native_transport_port] %>
 # The minimum and maximum threads for handling requests when the native
 # transport is used. The meaning is those is similar to the one of
 # rpc_min_threads and rpc_max_threads, though the default differ slightly and
@@ -350,16 +350,16 @@ native_transport_port: <%= node[:cassandra][:native_transport_port] %>
 
 
 # Whether to start the thrift rpc server.
-start_rpc: <%= cassandra_bool_config(node[:cassandra][:start_rpc]) %>
+## start_rpc: <%= cassandra_bool_config(node[:cassandra][:start_rpc]) %>
 # The address to bind the Thrift RPC service to -- clients connect
 # here. Unlike ListenAddress above, you *can* specify 0.0.0.0 here if
 # you want Thrift to listen on all interfaces.
 #
 # Leaving this blank has the same effect it does for ListenAddress,
 # (i.e. it will be based on the configured hostname of the node).
-rpc_address: <%= node[:cassandra][:rpc_address] %>
+## rpc_address: <%= node[:cassandra][:rpc_address] %>
 # port for Thrift to listen for clients on
-rpc_port: <%= node[:cassandra][:rpc_port] %>
+## rpc_port: <%= node[:cassandra][:rpc_port] %>
 
 # enable or disable keepalive on rpc connections
 rpc_keepalive: <%= cassandra_bool_config(node[:cassandra][:rpc_keepalive]) %>
@@ -492,17 +492,17 @@ compaction_preheat_key_cache: <%= cassandra_bool_config(node[:cassandra][:compac
 stream_throughput_outbound_megabits_per_sec: <%= node[:cassandra][:stream_throughput_outbound_megabits_per_sec] %>
 
 # How long the coordinator should wait for read operations to complete
-read_request_timeout_in_ms: <%= node[:cassandra][:read_request_timeout_in_ms] %>
+## read_request_timeout_in_ms: <%= node[:cassandra][:read_request_timeout_in_ms] %>
 # How long the coordinator should wait for seq or index scans to complete
-range_request_timeout_in_ms: <%= node[:cassandra][:range_request_timeout_in_ms] %>
+## range_request_timeout_in_ms: <%= node[:cassandra][:range_request_timeout_in_ms] %>
 # How long the coordinator should wait for writes to complete
-write_request_timeout_in_ms: <%= node[:cassandra][:write_request_timeout_in_ms] %>
+## write_request_timeout_in_ms: <%= node[:cassandra][:write_request_timeout_in_ms] %>
 # How long the coordinator should wait for truncates to complete
 # (This can be much longer, because unless auto_snapshot is disabled
 # we need to flush first so we can snapshot before removing the data.)
-truncate_request_timeout_in_ms: <%= node[:cassandra][:truncate_request_timeout_in_ms] %>
+## truncate_request_timeout_in_ms: <%= node[:cassandra][:truncate_request_timeout_in_ms] %>
 # The default timeout for other, miscellaneous operations
-request_timeout_in_ms: <%= node[:cassandra][:request_timeout_in_ms] %>
+## request_timeout_in_ms: <%= node[:cassandra][:request_timeout_in_ms] %>
 
 # Enable operation timeout information exchange between nodes to accurately
 # measure request timeouts, If disabled cassandra will assuming the request
