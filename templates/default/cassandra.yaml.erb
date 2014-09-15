@@ -78,7 +78,12 @@ authenticator: <%= node[:cassandra][:authenticator] %>
 # - AllowAllAuthorizer allows any action to any user - set it to disable authorization.
 # - CassandraAuthorizer stores permissions in system_auth.permissions table. Please
 #   increase system_auth keyspace replication factor if you use this authorizer.
-authority: <%= node[:cassandra][:authorizer] %>
+<% if node['cassandra']['authorizer'] %>
+authorizer: <%= node['cassandra']['authorizer'] %>
+<% end %>
+<% if node['cassandra']['authority'] %>
+authority: <%= node['cassandra']['authority'] %>
+<% end %>
 
 # Validity period for permissions cache (fetching permissions can be an
 # expensive operation depending on the authorizer, CassandraAuthorizer is
