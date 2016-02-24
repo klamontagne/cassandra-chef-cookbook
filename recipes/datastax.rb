@@ -62,6 +62,8 @@ apt_preference "cassandra" do
   pin_priority "700"
 end
 
+directory node.cassandra.conf_dir
+
 %w(cassandra.yaml cassandra-env.sh).each do |f|
   template File.join(node.cassandra.conf_dir, f) do
     cookbook node.cassandra.templates_cookbook
@@ -72,8 +74,6 @@ end
     notifies :restart, "service[cassandra]", :delayed
   end
 end
-
-directory '/etc/cassandra'
 
 package "cassandra" do
   action :install
