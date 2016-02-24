@@ -73,6 +73,8 @@ end
   end
 end
 
+directory '/etc/cassandra'
+
 package "cassandra" do
   action :install
   version node.cassandra.version
