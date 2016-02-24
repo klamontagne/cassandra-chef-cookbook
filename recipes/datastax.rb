@@ -44,71 +44,22 @@ end
   end
 end
 
-case node["platform_family"]
-when "debian"
-  if node['cassandra']['dse']
-    dse = node.cassandra.dse
-    if dse.credentials.databag
-      dse_credentials = Chef::EncryptedDataBagItem.load(dse.credentials.databag.name, dse.credentials.databag.item)[dse.credentials.databag.entry]
-    else
-      dse_credentials = dse.credentials
-    end
+package "apt-transport-https"
 
-    package "apt-transport-https"
+apt_repository "datastax" do
+  uri          "http://debian.datastax.com/community"
+  distribution "stable"
+  components   ["main"]
+  key          "http://debian.datastax.com/debian/repo_key"
 
-    apt_repository "datastax" do
-      uri          "http://#{dse_credentials['username']}:#{dse_credentials['password']}@debian.datastax.com/enterprise"
-      distribution "stable"
-      components   ["main"]
-      key          "http://debian.datastax.com/debian/repo_key"
-      action :add
-    end
-  else
-    apt_repository "datastax" do
-      uri          "http://debian.datastax.com/community"
-      distribution "stable"
-      components   ["main"]
-      key          "http://debian.datastax.com/debian/repo_key"
+  action :add
+end
 
-      action :add
-    end
+package "python-cql"
 
-    # DataStax Server Community Edition package will not install w/o this
-    # one installed. MK.
-    package "python-cql" do
-      action :install
-    end
-
-    # This is necessary because apt gets very confused by the fact that the
-    # latest package available for cassandra is 2.x while you're trying to
-    # install dsc12 which requests 1.2.x.
-    if node[:platform_family] == "debian" then
-      package "cassandra" do
-        action :install
-        version node.cassandra.version
-      end
-      apt_preference "cassandra" do
-        pin "version #{node.cassandra.version}"
-        pin_priority "700"
-      end
-    end
-  end
-
-when "rhel"
-  include_recipe "yum"
-
-  yum_repository "datastax" do
-    description "DataStax Repo for Apache Cassandra"
-    baseurl "http://rpm.datastax.com/community"
-    gpgcheck false
-    action :create
-  end
-
-  yum_package "#{node.cassandra.package_name}" do
-    version "#{node.cassandra.version}-#{node.cassandra.release}"
-    allow_downgrade
-  end
-
+apt_preference "cassandra" do
+  pin "version #{node.cassandra.version}"
+  pin_priority "700"
 end
 
 %w(cassandra.yaml cassandra-env.sh).each do |f|
@@ -120,6 +71,11 @@ end
     mode  0644
     notifies :restart, "service[cassandra]", :delayed
   end
+end
+
+package "cassandra" do
+  action :install
+  version node.cassandra.version
 end
 
 service "cassandra" do
