@@ -78,6 +78,7 @@ directory '/etc/cassandra'
 package "cassandra" do
   action :install
   version node.cassandra.version
+  options '-o Dpkg::Options::="--force-confold"'
 end
 
 service "cassandra" do
